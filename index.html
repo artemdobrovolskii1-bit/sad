@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Верда — товары для сада</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{--h:#f8fcf0;--a:#e6f578;--b:rgba(215,230,190,.75);--l:rgba(210,230,160,.8);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{background:#000;overflow-x:hidden;font-family:'Inter',system-ui,sans-serif;color:#e8ece4}
+canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0}
+#wrap{position:relative;z-index:1}
+.sec{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:90px 32px;text-align:center}
+.hero{justify-content:flex-start;padding-top:12vh;min-height:110vh}
+.tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--l);font-weight:500;text-shadow:0 1px 16px #000}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:400;color:var(--h);text-shadow:0 2px 30px rgba(0,0,0,.7)}
+h1{font-size:clamp(46px,8vw,104px);line-height:1.05}
+h2{font-size:clamp(28px,4vw,54px);line-height:1.2;max-width:800px}
+em{font-style:italic;color:var(--a)}
+.sub{font-size:clamp(14px,1.5vw,18px);line-height:1.7;max-width:520px;color:var(--b);font-weight:300}
+.btn{display:inline-block;padding:13px 32px;border:1px solid rgba(180,210,140,.35);border-radius:40px;background:rgba(30,50,30,.45);backdrop-filter:blur(10px);color:var(--a);font:500 12px Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.3s;text-decoration:none}
+.btn:hover{background:rgba(50,80,50,.6);border-color:rgba(180,210,140,.6);transform:translateY(-2px)}
+[data-r]{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+[data-r].on{opacity:1;transform:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) 32px 20px;background:linear-gradient(#000a,transparent)}
+.logo{font:400 20px 'Playfair Display',serif;color:var(--h);letter-spacing:1px}
+.links{display:flex;gap:26px}
+.links a,.cart{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--b);text-decoration:none;font-weight:500;cursor:pointer;transition:color .3s;background:none;border:0;font-family:inherit}
+.links a:hover,.cart:hover{color:var(--a)}
+@media(max-width:700px){.links{display:none}nav{padding-left:20px;padding-right:20px}}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.chip{padding:8px 18px;border:1px solid rgba(140,180,120,.2);border-radius:30px;background:rgba(10,18,10,.5);backdrop-filter:blur(10px);color:var(--b);font:500 11px Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:.3s}
+.chip.act,.chip:hover{color:var(--a);border-color:rgba(200,230,140,.5);background:rgba(40,65,40,.5)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;width:100%}
+@media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.grid{grid-template-columns:1fr;max-width:380px}}
+.card{border:1px solid rgba(140,180,120,.14);border-radius:16px;padding:28px 22px;background:rgba(10,18,10,.6);backdrop-filter:blur(16px);box-shadow:0 8px 40px rgba(0,0,0,.4);transition:.4s;display:flex;flex-direction:column;gap:10px;align-items:center}
+.card:hover{border-color:rgba(140,180,120,.35);transform:translateY(-4px)}
+.card .ic{font-size:46px;line-height:1;filter:drop-shadow(0 4px 12px #0008)}
+.card h3{font-size:20px}
+.card p{font-size:13px;line-height:1.6;color:var(--b);font-weight:300;flex:1}
+.price{font:400 22px 'Playfair Display',serif;color:var(--a)}
+.card .btn{padding:9px 22px;font-size:11px}
+.stats{display:flex;gap:56px;flex-wrap:wrap;justify-content:center}
+.num{font:400 clamp(40px,5vw,64px)/1 'Playfair Display',serif;color:var(--a);text-shadow:0 2px 24px #000}
+.unit{font-size:14px;color:var(--b);margin-top:8px;font-weight:300}
+footer{position:relative;z-index:2;background:#000;border-top:1px solid rgba(140,180,120,.1);padding:50px 32px 34px}
+.fi{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px}
+@media(max-width:600px){.fi{grid-template-columns:1fr}}
+footer p,footer a{font-size:12px;line-height:1.8;color:rgba(215,230,190,.5);font-weight:300;text-decoration:none;display:block}
+footer a:hover{color:var(--a)}
+.ft{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--l);margin-bottom:12px}
+.copy{max-width:1000px;margin:32px auto 0;padding-top:20px;border-top:1px solid rgba(140,180,120,.08);font-size:11px;color:rgba(215,230,190,.3)}
+#toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);padding:10px 22px;border-radius:30px;background:rgba(20,40,20,.9);border:1px solid rgba(180,210,140,.3);color:var(--a);font-size:12px;opacity:0;transition:.4s;z-index:300;pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+<script type="importmap">
+{"imports":{
+"three":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.webgpu.js",
+"three/webgpu":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.webgpu.js",
+"three/tsl":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.tsl.js"}}
+</script>
+</head>
+<body>
+<nav>
+  <div class="logo">Верда</div>
+  <div class="links"><a href="#s1">Каталог</a><a href="#s2">Почему мы</a><a href="#s3">Заказ</a></div>
+  <button class="cart" id="cart">Корзина · <span id="cnt">0</span></button>
+</nav>
+
+<div id="wrap">
+  <section class="sec hero" id="s0">
+    <span class="tag" data-r>Всё для вашего сада</span>
+    <h1 data-r>Сад, где<br>всё <em>растёт</em></h1>
+    <p class="sub" data-r>Инструменты, семена и удобрения для тех, кто любит землю. Доставка по всей стране за 1–3 дня.</p>
+    <a class="btn" href="#s1" data-r>Смотреть каталог</a>
+  </section>
+
+  <section class="sec" id="s1">
+    <span class="tag" data-r>Каталог</span>
+    <h2 data-r>Выберите <em>лучшее</em> для грядки</h2>
+    <div class="chips" data-r id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="sec" id="s2">
+    <span class="tag" data-r>Почему Верда</span>
+    <h2 data-r>Мы отбираем только то, что <em>служит</em> годами</h2>
+    <div class="stats">
+      <div data-r><div class="num">12 000+</div><div class="unit">довольных садоводов</div></div>
+      <div data-r><div class="num">450</div><div class="unit">товаров в наличии</div></div>
+      <div data-r><div class="num">1–3</div><div class="unit">дня доставка</div></div>
+      <div data-r><div class="num">30</div><div class="unit">дней на возврат</div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="s3">
+    <h2 data-r>Начните <em>сезон</em><br>вместе с нами</h2>
+    <p class="sub" data-r>Подпишитесь и получите скидку 10% на первый заказ.</p>
+    <a class="btn" href="#s1" data-r>Перейти к покупкам →</a>
+  </section>
+</div>
+
+<footer id="s4">
+  <div class="fi">
+    <div><div class="logo" style="margin-bottom:12px">Верда</div><p>Магазин садовых товаров для тех, кто строит зелёный дом.</p></div>
+    <div><div class="ft">Покупателям</div><a href="javascript:void(0)">Доставка и оплата</a><a href="javascript:void(0)">Возврат</a><a href="javascript:void(0)">Контакты</a></div>
+    <div><div class="ft">Разделы</div><a href="#s1">Каталог</a><a href="#s2">О магазине</a><a href="javascript:void(0)">Блог</a></div>
+  </div>
+  <div class="copy">© 2026 Верда. Все права защищены.</div>
+</footer>
+<div id="toast"></div>
+
+<script>
+const P=[
+ ['🌱','Семена томатов «Бычье сердце»','Растения','Крупноплодный сорт, 20 семян в пакете.',290],
+ ['✂️','Секатор Pro','Инструменты','Закалённая сталь, эргономичная ручка.',1490],
+ ['🚿','Лейка медная 5 л','Полив','Длинный носик, долговечное покрытие.',2190],
+ ['🧤','Садовые перчатки','Аксессуары','Дышащий материал, защита от шипов.',590],
+ ['🪴','Горшок керамический','Растения','Диаметр 25 см, с дренажным отверстием.',890],
+ ['🌿','Органическое удобрение 2 кг','Растения','Биогумус для овощей и цветов.',690],
+ ['⛏️','Лопата штыковая','Инструменты','Нержавеющая сталь, ручка из ясеня.',1790],
+ ['💧','Шланг 20 м','Полив','Армированный, не перегибается.',1990],
+ ['👒','Садовая шляпа','Аксессуары','Широкие поля, защита от солнца.',750]
+];
+const cats=['Все','Инструменты','Полив','Растения','Аксессуары'];
+let cur='Все',cart=0;
+const grid=document.getElementById('grid'),chips=document.getElementById('chips'),toast=document.getElementById('toast');
+function fmt(n){return n.toLocaleString('ru-RU')+' ₽'}
+function show(m){toast.textContent=m;toast.classList.add('on');clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove('on'),1600)}
+function render(){
+  chips.innerHTML=cats.map(c=>`<button class="chip ${c===cur?'act':''}" data-c="${c}">${c}</button>`).join('');
+  grid.innerHTML=P.filter(p=>cur==='Все'||p[2]===cur).map((p,i)=>`<div class="card"><div class="ic">${p[0]}</div><h3>${p[1]}</h3><p>${p[3]}</p><div class="price">${fmt(p[4])}</div><button class="btn" data-i="${i}">В корзину</button></div>`).join('');
+}
+chips.addEventListener('click',e=>{const c=e.target.dataset.c;if(c){cur=c;render()}});
+grid.addEventListener('click',e=>{if(e.target.dataset.i!==undefined){cart++;document.getElementById('cnt').textContent=cart;show('Добавлено в корзину')}});
+document.getElementById('cart').onclick=()=>show(cart?`В корзине товаров: ${cart}`:'Корзина пуста');
+render();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -12% 0px'});
+document.querySelectorAll('[data-r]').forEach(el=>io.observe(el));
+document.querySelectorAll('a[href^="#s"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+</script>
+
+<script type="module">
+try{
+const THREE=await import('three/webgpu');
+const {Fn,uniform,float,vec3,instancedArray,instanceIndex,uv,positionGeometry,sin,cos,pow,smoothstep,mix,sqrt,select,hash,time,deltaTime,PI,mx_noise_float}=await import('three/tsl');
+
+const N=120000,FIELD=30;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color('#000');
+const camera=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,100);
+const renderer=new THREE.WebGPURenderer({antialias:true});
+renderer.setPixelRatio(innerWidth<1200?1.5:Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+document.body.prepend(renderer.domElement);
+await renderer.init();
+
+const bladeData=instancedArray(N,'vec4'),bendState=instancedArray(N,'vec4'),bladeBound=instancedArray(N,'float');
+const mouseWorld=uniform(new THREE.Vector3(99999,0,99999));
+const camWorld=uniform(new THREE.Vector3(99999,0,99999));
+const camR=uniform(15),camS=uniform(5.9);
+const mouseR=6.1,mouseS=4.0,outR=9.4,outS=1.45;
+const windSpeed=1.3,windAmp=.21,bladeW=4.0,tipW=.19,bladeH=1.6,hVar=.5,lean=1.1,colVar=.93;
+const cBase=uniform(new THREE.Color().setRGB(.0044,.013,.0012));
+const cTip=uniform(new THREE.Color().setRGB(.5776,.4793,.0513));
+const cGold=uniform(new THREE.Color().setRGB(.6584,.4793,.0395));
+const cGreen=uniform(new THREE.Color().setRGB(.0685,.1946,.007));
+const cMid=uniform(new THREE.Color().setRGB(.0262,.0762,.0044));
+const fogStart=6.5,fogEnd=12;
+
+const noise2D=Fn(([x,z])=>mx_noise_float(vec3(x,float(0),z)).mul(.5).add(.5));
+
+const computeInit=Fn(()=>{
+  const b=bladeData.element(instanceIndex);
+  const col=instanceIndex.mod(283),row=instanceIndex.div(283);
+  const jx=hash(instanceIndex).sub(.5),jz=hash(instanceIndex.add(7919)).sub(.5);
+  const wx=col.toFloat().add(jx).div(float(283)).sub(.5).mul(FIELD);
+  const wz=row.toFloat().add(jz).div(float(283)).sub(.5).mul(FIELD);
+  b.x.assign(wx);b.y.assign(wz);
+  b.z.assign(hash(instanceIndex.add(1337)).mul(PI.mul(2)));
+  const n1=noise2D(wx.mul(.3),wz.mul(.3));
+  const n2=noise2D(wx.mul(4.5).add(50),wz.mul(4.5).add(50));
+  b.w.assign(n1.mul(1.85).sub(.2).add(n2.mul(.4)).max(0));
+  const d=sqrt(wx.mul(wx).add(wz.mul(wz)));
+  const en=noise2D(wx.mul(.25).add(100),wz.mul(.25).add(100));
+  const maxR=float(12).add(en.sub(.5).mul(6));
+  const bd=float(1).sub(smoothstep(maxR.sub(1.5),maxR,d));
+  bladeBound.element(instanceIndex).assign(select(bd.lessThan(.05),float(0),bd));
+})().compute(N);
+
+const computeUpdate=Fn(()=>{
+  const b=bladeData.element(instanceIndex),bend=bendState.element(instanceIndex);
+  const bx=b.x,bz=b.y;
+  const w1=sin(bx.mul(.35).add(bz.mul(.12)).add(time.mul(windSpeed)));
+  const w2=sin(bx.mul(.18).add(bz.mul(.28)).add(time.mul(windSpeed*.67)).add(1.7));
+  const lw=deltaTime.mul(4).saturate();
+  bend.x.assign(mix(bend.x,w1.add(w2).mul(windAmp),lw));
+  bend.y.assign(mix(bend.y,w1.sub(w2).mul(windAmp*.55),lw));
+  const push=(cx,cz,R,S)=>{
+    const dx=bx.sub(cx),dz=bz.sub(cz);
+    const d=sqrt(dx.mul(dx).add(dz.mul(dz))).add(1e-4);
+    const f=float(1).sub(d.div(R).saturate());
+    const inf=f.mul(f).mul(S);
+    return [dx.div(d).mul(inf),dz.div(d).mul(inf)];
+  };
+  const a=push(mouseWorld.x,mouseWorld.z,mouseR,mouseS);
+  const o=push(mouseWorld.x,mouseWorld.z,outR,outS);
+  const c=push(camWorld.x,camWorld.z,camR,camS);
+  const tx=a[0].add(o[0]).add(c[0]),tz=a[1].add(o[1]).add(c[1]);
+  const tm=sqrt(tx.mul(tx).add(tz.mul(tz)));
+  const cm=sqrt(bend.z.mul(bend.z).add(bend.w.mul(bend.w)));
+  const lm=select(tm.greaterThan(cm),deltaTime.mul(12),deltaTime.mul(1)).saturate();
+  bend.z.assign(mix(bend.z,tx,lm));bend.w.assign(mix(bend.w,tz,lm));
+})().compute(N);
+
+function bladeGeo(){
+  const segs=5,W=.055,H=1,v=[],n=[],u=[],ix=[];
+  for(let i=0;i<=segs;i++){const t=i/segs,y=t*H,hw=W*.5*(1-t*.82);v.push(-hw,y,0,hw,y,0);n.push(0,0,1,0,0,1);u.push(0,t,1,t)}
+  for(let i=0;i<segs;i++){const b=i*2;ix.push(b,b+1,b+2,b+1,b+3,b+2)}
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));
+  g.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute(u,2));
+  g.setIndex(ix);return g;
+}
+
+const mat=new THREE.MeshBasicNodeMaterial({side:THREE.DoubleSide});
+mat.positionNode=Fn(()=>{
+  const b=bladeData.element(instanceIndex),bend=bendState.element(instanceIndex);
+  const bound=bladeBound.element(instanceIndex);
+  const vis=select(hash(instanceIndex.add(9999)).lessThan(.5),float(1),float(0));
+  const hs=float(.35).add(b.w).add(hash(instanceIndex.add(5555)).mul(hVar)).mul(bound).mul(vis);
+  const taper=float(1).sub(uv().y.mul(1-tipW));
+  const lx=positionGeometry.x.mul(bladeW).mul(taper).mul(hs.sign());
+  const ly=positionGeometry.y.mul(hs).mul(bladeH);
+  const cY=cos(b.z),sY=sin(b.z);
+  const rx=lx.mul(cY),rz=lx.mul(sY);
+  const bf=pow(uv().y,1.8);
+  const sbx=hash(instanceIndex.add(7777)).sub(.5).mul(lean);
+  const sbz=hash(instanceIndex.add(8888)).sub(.5).mul(lean);
+  const relX=rx.add(sbx.add(bend.x).add(bend.z).mul(bf).mul(bladeH));
+  const relZ=rz.add(sbz.add(bend.y).add(bend.w).mul(bf).mul(bladeH));
+  const ol=sqrt(rx.mul(rx).add(ly.mul(ly)).add(rz.mul(rz)));
+  const nl=sqrt(relX.mul(relX).add(ly.mul(ly)).add(relZ.mul(relZ)));
+  const s=ol.div(nl.max(1e-4));
+  return vec3(b.x.add(relX.mul(s)),ly.mul(s),b.y.add(relZ.mul(s)));
+})();
+mat.colorNode=Fn(()=>{
+  const t=uv().y,b=bladeData.element(instanceIndex);
+  const clump=b.w.saturate();
+  const gold=hash(instanceIndex.add(4242)).lessThan(.4);
+  const low=smoothstep(float(0),float(.45),t),up=smoothstep(float(.4),float(.85),t);
+  const tm=float(1-colVar).add(clump.mul(colVar));
+  const tip=mix(mix(cGreen,cTip,tm),mix(cGreen,cGold,tm),select(gold,float(1),float(0)));
+  const col=mix(mix(cBase,cMid,low),tip,up);
+  const d=sqrt(b.x.mul(b.x).add(b.y.mul(b.y)));
+  return mix(col,vec3(0,0,0),smoothstep(float(fogStart),float(fogEnd),d));
+})();
+mat.opacityNode=Fn(()=>{
+  const b=bladeData.element(instanceIndex);
+  const d=sqrt(b.x.mul(b.x).add(b.y.mul(b.y)));
+  return smoothstep(float(0),float(.1),uv().y).mul(float(1).sub(smoothstep(float(9),float(14),d)));
+})();
+mat.transparent=true;
+
+const grass=new THREE.InstancedMesh(bladeGeo(),mat,N);
+grass.frustumCulled=false;scene.add(grass);
+const dummy=new THREE.Object3D();
+for(let i=0;i<N;i++)grass.setMatrixAt(i,dummy.matrix);
+grass.instanceMatrix.needsUpdate=true;
+
+// Ключевые кадры камеры: [scroll, pos xyz, look xyz] — hero, каталог, преимущества, заказ, футер
+const kf=[
+ [0,-2.8,7.2,19.6,.5,1.5,.4],
+ [.3,7.5,10.9,15.8,0,0,.7],
+ [.6,-8,6.8,21.6,0,.2,0],
+ [.85,-1.6,2.4,0,-1.2,-2,0],
+ [1,0,15,0,-5,3,-5]
+];
+const ids=['s0','s1','s2','s3'];
+function sync(){
+  const sc=document.documentElement.scrollHeight-innerHeight;
+  if(sc<=0)return;
+  ids.forEach((id,i)=>kf[i][0]=Math.min(1,document.getElementById(id).offsetTop/sc));
+  kf[4][0]=1;
+}
+sync();addEventListener('resize',()=>setTimeout(sync,100));addEventListener('load',()=>setTimeout(sync,300));
+function cam(t){
+  let i=0;
+  for(let j=1;j<kf.length;j++){if(kf[j][0]>=t){i=j-1;break}if(j===kf.length-1)i=j-1}
+  const a=kf[i],b=kf[i+1],r=b[0]-a[0];
+  let k=r>0?Math.max(0,Math.min(1,(t-a[0])/r)):0;k=k*k*(3-2*k);
+  return a.map((v,n)=>v+(b[n]-v)*k);
+}
+
+const rc=new THREE.Raycaster(),ndc=new THREE.Vector2(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
+addEventListener('mousemove',e=>{
+  ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);
+  rc.setFromCamera(ndc,camera);
+  if(rc.ray.intersectPlane(plane,hit))mouseWorld.value.copy(hit);
+});
+addEventListener('mouseleave',()=>mouseWorld.value.set(99999,0,99999));
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+
+await renderer.computeAsync(computeInit);
+renderer.domElement.style.cssText='opacity:0;transition:opacity .5s';
+const look=new THREE.Vector3(),clock=new THREE.Clock();
+let cur=0,target=0,first=true;
+function prog(){const s=document.documentElement.scrollHeight-innerHeight;return s>0?Math.min(1,Math.max(0,scrollY/s)):0}
+renderer.setAnimationLoop(()=>{
+  const dt=Math.min(clock.getDelta(),.05);
+  target=prog();
+  cur+=(target-cur)*Math.min(1,dt*6);
+  const c=cam(cur);
+  camera.position.set(c[1],c[2],c[3]);
+  look.set(c[4],c[5],c[6]);camera.lookAt(look);
+  camWorld.value.set(camera.position.x,0,camera.position.z);
+  const pc=Math.pow(Math.max(0,1-camera.position.y/10),2);
+  camR.value=Math.min(15,15*(.3+pc*.7));
+  camS.value=5.9*(.1+pc*.9);
+  renderer.compute(computeUpdate);
+  renderer.render(scene,camera);
+  if(first){first=false;renderer.domElement.style.opacity='1'}
+});
+}catch(err){
+  console.error(err);
+  document.body.style.background='radial-gradient(ellipse at 50% 100%,#1c3a0c,#000 70%)';
+}
+</script>
+</body>
+</html>

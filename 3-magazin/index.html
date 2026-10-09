@@ -86,7 +86,7 @@ footer{background:#14241A;color:#A7B4AA;padding:34px 0 100px;font-size:.86rem}fo
  <button class="btn bl" id="reset" style="width:100%;margin-top:12px">Сбросить</button></aside>
  <main><div class="tb"><h1 id="ttl">Все товары</h1><span class="c" id="found"></span><button class="btn bl fbtn" id="fopen">⚙ Фильтры</button><select id="sort"><option value="pop">Сначала популярные</option><option value="asc">Сначала дешевле</option><option value="desc">Сначала дороже</option><option value="disc">По размеру скидки</option></select></div>
  <div class="grid" id="grid"></div><div class="more"><button class="btn bl" id="moreB">Показать ещё</button></div></main></div>
-<div class="info"><div class="inf"><span>🚚</span><div><b>Доставка в день заказа</b><small>по Копейску и Челябинску</small></div></div><div class="inf"><span>🌱</span><div><b>Гарантия приживаемости</b><small>замена саженца 30 дней</small></div></div><div class="inf"><span>💳</span><div><b>Оплата при получении</b><small>наличными или картой</small></div></div><div class="inf"><span>👩‍🌾</span><div><b>Агроном на связи</b><small>бесплатная консультация</small></div></div></div>
+<div class="info"><div class="inf"><span>🚚</span><div><b>Доставка в день заказа</b><small>по Копейску и Челябинску</small></div></div><div class="inf"><span>🌱</span><div><b>Гарантия приживаемости</b><small>замена саженца 30 дней</small></div></div><div class="inf"><span>💳</span><div><b>Оплата при получении</b><small>наличными или картой</small></div></div><div class="inf"><span>🌻</span><div><b>Агроном на связи</b><small>бесплатная консультация</small></div></div></div>
 <h2 style="font-size:1.5rem">Отзывы покупателей</h2><div class="rev" id="rev"></div></div>
 <footer><div class="w"><div><b>Верда — товары для сада и огорода</b>Копейск, ул. Садовая, 1 · ежедневно 9:00–20:00<br>+7-777-777-77-77<br><br>© 2026 · Все данные на сайте — образец</div><div><b>Покупателям</b>Доставка и оплата<br>Гарантия и возврат<br>Самовывоз</div><div><b>Каталог</b>Семена и рассада<br>Инструменты<br>Теплицы</div></div></footer>
 
@@ -158,7 +158,7 @@ function $(s){return document.querySelector(s)}
 function st(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('verda-'+k)||'null');localStorage.setItem('verda-'+k,JSON.stringify(v))}catch(e){return null}}
 var P=GOODS.map(function(g,i){return {id:i,ph:g[0],n:g[1],c:g[2],p:g[3],o:g[4],d:g[5],t:g[6],pop:(i*37)%45}});
 var cart=st('cart')||{},fav=st('fav')||{},S={cat:'',q:'',max:40000,min:0,sale:false,hit:false,nw:false,sort:'pop',lim:12};
-var ICO={'Семена':'🌰','Рассада и саженцы':'🌱','Инструменты':'🪓','Полив':'💧','Грунты и удобрения':'🪴','Горшки и декор':'🏺','Теплицы и укрытия':'🏡','Сад и отдых':'🪑'};
+var ICO={'Семена':'🌰','Рассада и саженцы':'🌱','Инструменты':'✂️','Полив':'💧','Грунты и удобрения':'🌿','Горшки и декор':'🏺','Теплицы и укрытия':'🏡','Сад и отдых':'⛱️'};
 function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},1600)}
 /* слайдер */
 var SL=[[PH.display,'Сезон рассады','Рассада, которая приживается на Урале','Томаты, перцы, огурцы в кассетах — из наших теплиц.','Рассада и саженцы'],[PH.inside,'−15% до воскресенья','Теплицы с установкой за один день','Поликарбонат 4 мм, усиленный профиль, гарантия 5 лет.','Теплицы и укрытия'],[PH.flowers,'Новинка','Капельный полив — урожай без хлопот','Комплект на 30 растений с таймером. Монтаж за час.','Полив']],si=0;

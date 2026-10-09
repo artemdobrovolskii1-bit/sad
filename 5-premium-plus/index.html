@@ -20,7 +20,7 @@ canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0}
 img{display:block;max-width:100%}button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 #wrap{position:relative;z-index:1}
 .sec{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:100px 24px;text-align:center}
-.hero{justify-content:flex-start;padding-top:14vh;min-height:110vh}
+.hero{justify-content:flex-start;padding-top:14vh;min-height:110vh}.hero .sub{background:radial-gradient(closest-side,rgba(0,0,0,.6),rgba(0,0,0,0));padding:14px 30px}
 .tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--l);font-weight:600;text-shadow:0 1px 16px #000}
 h1,h2,h3{font-family:'Playfair Display',serif;font-weight:400;color:var(--h);text-shadow:0 2px 30px rgba(0,0,0,.75)}
 h1{font-size:clamp(46px,8vw,104px);line-height:1.04}
@@ -294,7 +294,7 @@ function checkout(){$('#cart').classList.remove('on');var s=sum(),now=new Date()
   $('#mb').innerHTML='<div class="ok"><div class="spin"></div><p style="color:var(--b)">'+(pay=='cash'?'Оформляем заказ…':'Проводим оплату…')+'</p></div>';
   setTimeout(function(){cart={};upd();modal('<div class="ok"><div class="c">✓</div><h3>Заказ '+no+' принят</h3><p style="color:var(--b);font-size:14px;line-height:1.6">Доставим '+days[di].toLowerCase()+(slot?', с '+slot.replace('–',' до ')+' ч':'')+'.<br>Анна-агроном пришлёт памятку по посадке в Telegram,<br>а за день до доставки — напоминание.</p><button class="btn fill" data-close style="margin-top:14px">Готово</button></div>')},1500)}}
 /* 3D-планировщик */
-var T=[['bed','Грядка','#8a5a32','🥬',[[29,.5],[5,.17]],'грунт 0,5 мешка + рассада'],['gh','Теплица','#cfe7f2','🏠',[[39,1/18],[5,.5],[27,1/18]],'1/18 теплицы 3×6 + полив'],['tree','Плодовое дерево','#2f6b2a','🌳',[[9,1],[30,.2]],'саженец + биогумус'],['flow','Цветник','#d9709a','🌸',[[10,.5],[11,.25],[31,.3]],'розы, гортензии, мульча'],['lawn','Газон','#6fae3f','',[[4,.025]],'семена 25 г/м²'],['path','Дорожка','#c9b48f','',[[31,.4]],'мульча из коры'],['rest','Зона отдыха','#b9874e','🪑',[[42,1/9],[38,.2]],'мебель + фонари']];
+var T=[['bed','Грядка','#8a5a32','🥬',[[29,.5],[5,.17]],'грунт 0,5 мешка + рассада'],['gh','Теплица','#cfe7f2','🏠',[[39,1/18],[5,.5],[27,1/18]],'1/18 теплицы 3×6 + полив'],['tree','Плодовое дерево','#2f6b2a','🌳',[[9,1],[30,.2]],'саженец + биогумус'],['flow','Цветник','#d9709a','🌸',[[10,.5],[11,.25],[31,.3]],'розы, гортензии, мульча'],['lawn','Газон','#6fae3f','',[[4,.025]],'семена 25 г/м²'],['path','Дорожка','#c9b48f','',[[31,.4]],'мульча из коры'],['rest','Зона отдыха','#b9874e','⛱️',[[42,1/9],[38,.2]],'мебель + фонари']];
 var Z={bed:16,gh:34,tree:40,flow:14,lawn:3,path:2,rest:12},tool='bed',grid=Array(96).fill(null),drag=false;
 $('#tools').insertAdjacentHTML('beforeend',T.map(function(t,i){return '<button class="tl'+(i?'':' on')+'" data-t="'+t[0]+'"><i style="background:'+t[2]+'"></i><span>'+t[1]+'<small>'+t[5]+'</small></span></button>'}).join(''));
 $('#tools').onclick=function(e){var b=e.target.closest('.tl');if(!b)return;tool=b.dataset.t;this.querySelectorAll('.tl').forEach(function(x){x.classList.toggle('on',x==b)})};

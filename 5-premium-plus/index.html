@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow">
+<title>Верда — товары для сада · 3D-планировщик участка</title>
+<meta name="description" content="Садовый маркет «Верда»: живое 3D-поле, планировщик участка с готовым списком покупок, агроном онлайн, доставка ко времени и оплата онлайн.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{--h:#f8fcf0;--a:#e6f578;--b:rgba(215,230,190,.78);--l:rgba(210,230,160,.85);--glass:rgba(10,18,10,.62);--bd:rgba(140,180,120,.18)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-padding-top:70px}
+html,body{background:#000;overflow-x:hidden;font-family:'Inter',system-ui,sans-serif;color:#e8ece4}
+body.nogl{background:#050805}
+body.nogl::before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.8)),url("https://images.unsplash.com/photo-1729058015948-592a8e4a1772?w=1800&q=70&auto=format&fit=crop") center/cover}
+canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0}
+img{display:block;max-width:100%}button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+#wrap{position:relative;z-index:1}
+.sec{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:100px 24px;text-align:center}
+.hero{justify-content:flex-start;padding-top:14vh;min-height:110vh}
+.tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--l);font-weight:600;text-shadow:0 1px 16px #000}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:400;color:var(--h);text-shadow:0 2px 30px rgba(0,0,0,.75)}
+h1{font-size:clamp(46px,8vw,104px);line-height:1.04}
+h2{font-size:clamp(30px,4.2vw,56px);line-height:1.15;max-width:860px}
+em{font-style:italic;color:var(--a)}
+.sub{font-size:clamp(14px,1.5vw,18px);line-height:1.7;max-width:560px;color:var(--b);font-weight:300;text-shadow:0 1px 18px #000}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 30px;border:1px solid rgba(180,210,140,.35);border-radius:40px;background:rgba(30,50,30,.5);backdrop-filter:blur(10px);color:var(--a);font:600 12px Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase;transition:.3s;text-decoration:none}
+.btn:hover{background:rgba(50,80,50,.65);border-color:rgba(180,210,140,.6);transform:translateY(-2px)}
+.btn.fill{background:var(--a);color:#12200f;border-color:var(--a)}.btn.fill:hover{background:#f0fb9a}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+[data-r]{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+[data-r].on{opacity:1;transform:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:20px;padding:calc(18px + env(safe-area-inset-top,0px)) 28px 18px;background:linear-gradient(#000c,transparent)}
+.logo{font:400 22px 'Playfair Display',serif;color:var(--h);letter-spacing:1px;text-decoration:none}
+.links{display:flex;gap:24px;margin-left:24px}
+.links a,.nb{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--b);text-decoration:none;font-weight:600;transition:color .3s;background:none;border:0}
+.links a:hover,.nb:hover{color:var(--a)}
+.nr{margin-left:auto;display:flex;gap:18px;align-items:center}
+.nb em{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:10px;background:var(--a);color:#12200f;margin-left:4px;font-size:10px;letter-spacing:0;padding:0 5px}
+.nb.bump{animation:bump .5s}@keyframes bump{40%{transform:scale(1.15)}}
+@media(max-width:860px){.links{display:none}nav{padding-left:18px;padding-right:18px}}
+.glass{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--bd);border-radius:20px;box-shadow:0 10px 50px rgba(0,0,0,.45)}
+/* каталог */
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{padding:8px 18px;border:1px solid var(--bd);border-radius:30px;background:rgba(10,18,10,.55);backdrop-filter:blur(10px);color:var(--b);font:600 11px Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase;transition:.3s}
+.chip.act,.chip:hover{color:var(--a);border-color:rgba(200,230,140,.5);background:rgba(40,65,40,.55)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1160px;width:100%;text-align:left}
+.card{overflow:hidden;display:flex;flex-direction:column;transition:transform .4s,border-color .4s;animation:ap .6s both}
+@keyframes ap{from{opacity:0;transform:translateY(20px)}}
+.card:hover{transform:translateY(-6px);border-color:rgba(200,230,140,.45)}
+.card .im{aspect-ratio:1/1;overflow:hidden;position:relative;background:#1b2a16}.card .im img{width:100%;height:100%;object-fit:cover;transition:transform .8s;filter:saturate(1.05)}
+.card:hover .im img{transform:scale(1.07)}
+.card .bdg{position:absolute;top:10px;left:10px;background:var(--a);color:#12200f;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:20px;padding:4px 10px}
+.card .bdg.s{background:#e8805a;color:#fff}
+.card .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:18px;line-height:1.25;flex:1}.card p{font-size:12.5px;line-height:1.55;color:var(--b);font-weight:300}
+.pr{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.price{font:400 22px 'Playfair Display',serif;color:var(--a)}.price s{font:300 13px Inter,sans-serif;color:var(--b);margin-left:6px}
+.add{width:40px;height:40px;border-radius:50%;border:1px solid rgba(200,230,140,.4);background:rgba(40,65,40,.6);color:var(--a);font-size:20px;transition:.3s}.add:hover{background:var(--a);color:#12200f;transform:rotate(90deg)}
+.add.in{width:auto;padding:0 12px;border-radius:20px;font-size:12px;font-weight:700;background:var(--a);color:#12200f}
+/* планировщик */
+.plan{display:grid;grid-template-columns:230px 1fr 290px;gap:18px;max-width:1220px;width:100%;text-align:left;align-items:stretch}
+.tools{padding:16px;display:flex;flex-direction:column;gap:8px}
+.tools h4,.sum h4{font:600 11px Inter;letter-spacing:2px;text-transform:uppercase;color:var(--l);margin-bottom:4px}
+.tl{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;border:1px solid transparent;background:rgba(255,255,255,.03);text-align:left;font-size:13px;transition:.25s}
+.tl i{width:26px;height:26px;border-radius:7px;flex:none;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+.tl small{display:block;color:var(--b);font-size:11px}
+.tl.on{border-color:var(--a);background:rgba(230,245,120,.08)}
+.stage{position:relative;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:440px;overflow:hidden}
+.vw{position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:3}
+.vw button{border:1px solid var(--bd);background:rgba(0,0,0,.4);color:var(--b);border-radius:20px;padding:6px 12px;font-size:11px;letter-spacing:1px;text-transform:uppercase}.vw button.on{color:#12200f;background:var(--a)}
+.scene{perspective:1100px;width:100%;display:flex;justify-content:center;padding:30px 0}
+.plot{touch-action:none;display:grid;grid-template-columns:repeat(12,1fr);gap:3px;width:min(100%,540px);aspect-ratio:12/8;padding:10px;border-radius:14px;background:linear-gradient(135deg,#3d5a2a,#2b4220);transform-style:preserve-3d;transition:transform .9s cubic-bezier(.16,1,.3,1);box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.plot.iso{transform:rotateX(56deg) rotateZ(var(--rz,-38deg)) scale(.9)}
+.cell{position:relative;border-radius:4px;background:rgba(120,170,80,.28);transform-style:preserve-3d;transition:background .3s;cursor:crosshair}
+.cell:hover{background:rgba(230,245,120,.35)}
+.cell b{position:absolute;inset:0;border-radius:4px;transform:translateZ(var(--z,0));transition:transform .45s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.plot:not(.iso) .cell b{transform:none}
+.cell b.pop{animation:pop .45s cubic-bezier(.34,1.56,.64,1)}@keyframes pop{from{transform:translateZ(0) scale(.3)}}
+.cell b span{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;transform:translateZ(1px)}
+.plot.iso .cell b span{transform:rotateZ(38deg) rotateX(-56deg) translateZ(14px);font-size:16px}
+.hint{font-size:12px;color:var(--b);margin-top:6px;text-align:center}
+.rot{width:200px;accent-color:#e6f578;margin-top:4px}
+.sum{padding:16px;display:flex;flex-direction:column;gap:8px}
+.sl{flex:1;display:flex;flex-direction:column;gap:6px;max-height:280px;overflow:auto;font-size:13px}
+.sl div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)}.sl div span{color:var(--b)}.sl div b{white-space:nowrap}
+.tot{display:flex;justify-content:space-between;align-items:baseline;padding-top:8px;border-top:1px solid var(--bd)}.tot b{font:400 26px 'Playfair Display',serif;color:var(--a)}
+.ar{display:flex;gap:14px;font-size:12px;color:var(--b)}.ar b{color:var(--h);font-weight:600;font-size:15px;display:block}
+/* статистика и календарь */
+.stats{display:flex;gap:56px;flex-wrap:wrap;justify-content:center}
+.num{font:400 clamp(40px,5vw,64px)/1 'Playfair Display',serif;color:var(--a);text-shadow:0 2px 24px #000}
+.unit{font-size:14px;color:var(--b);margin-top:8px;font-weight:300}
+.tline{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;max-width:1100px;width:100%}
+.tm{padding:14px 10px;text-align:left;font-size:12px;color:var(--b);transition:.3s}.tm b{display:block;font:400 18px 'Playfair Display',serif;color:var(--h);margin-bottom:4px}
+.tm.now{border-color:var(--a);background:rgba(40,65,40,.7)}.tm.now b{color:var(--a)}
+/* агроном */
+.chat{max-width:560px;width:100%;text-align:left;display:flex;flex-direction:column;overflow:hidden}
+.ch{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bd)}
+.av{width:42px;height:42px;border-radius:50%;overflow:hidden;flex:none;background:#2b4220}.av img{width:100%;height:100%;object-fit:cover}
+.ch small{display:block;color:#9fe08a;font-size:11px}
+.msgs{padding:16px;display:flex;flex-direction:column;gap:10px;min-height:220px;max-height:340px;overflow:auto}
+.m{max-width:82%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.5;animation:ap .4s both}
+.m.a{background:rgba(255,255,255,.08);border-bottom-left-radius:4px}.m.u{align-self:flex-end;background:var(--a);color:#12200f;border-bottom-right-radius:4px}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--b);animation:tp 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}@keyframes tp{50%{opacity:.2;transform:translateY(-3px)}}
+.qk{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 16px}.qk button{border:1px solid var(--bd);background:rgba(255,255,255,.04);color:var(--b);border-radius:20px;padding:7px 12px;font-size:12px;transition:.25s}.qk button:hover{border-color:var(--a);color:var(--a)}
+footer{position:relative;z-index:2;background:#000;border-top:1px solid rgba(140,180,120,.1);padding:50px 28px 100px}
+.fi{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px}
+@media(max-width:600px){.fi{grid-template-columns:1fr}}
+footer p,footer a{font-size:12px;line-height:1.8;color:rgba(215,230,190,.55);font-weight:300;text-decoration:none;display:block}
+.ft{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--l);margin-bottom:12px}
+/* корзина и модалки */
+.drw{position:fixed;inset:0;z-index:200;pointer-events:none}.drw .ov{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:.3s}
+.drw .pn{position:absolute;top:0;right:0;bottom:0;width:min(420px,100%);background:#0b120a;border-left:1px solid var(--bd);transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+.drw.on{pointer-events:auto}.drw.on .ov{opacity:1}.drw.on .pn{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--bd)}.dh h3{font-size:26px}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--bd);background:none;color:var(--b);font-size:15px}
+.db{flex:1;overflow:auto;padding:8px 20px}.df{padding:16px 20px;border-top:1px solid var(--bd)}
+.ci{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}.ci .t{width:56px;height:56px;border-radius:10px;overflow:hidden;background:#1b2a16}.ci .t img{width:100%;height:100%;object-fit:cover}
+.ci .q{display:flex;gap:8px;align-items:center;margin-top:4px}.ci .q button{width:24px;height:24px;border-radius:50%;border:1px solid var(--bd);background:none;color:var(--a)}
+.ln{display:flex;justify-content:space-between;font-size:13px;color:var(--b);padding:3px 0}.ln.t{font-size:16px;color:var(--h);font-weight:600;padding-top:8px}
+.mod{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;padding:14px;background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}.mod.on{display:flex}
+.mb{width:min(560px,100%);max-height:94vh;overflow:auto;background:#0b120a;border:1px solid var(--bd);border-radius:22px;padding:24px;position:relative;text-align:left;animation:mi .4s cubic-bezier(.16,1,.3,1)}@keyframes mi{from{opacity:0;transform:translateY(20px) scale(.97)}}
+.mb .x{position:absolute;top:14px;right:14px}.mb h3{font-size:30px;margin-bottom:12px}
+.fld{display:block;margin-bottom:10px;font-size:11px;color:var(--b);letter-spacing:1px;text-transform:uppercase}.fld input,.fld select{display:block;width:100%;margin-top:4px;border:1px solid var(--bd);background:rgba(255,255,255,.04);border-radius:12px;padding:12px;font-size:14px;letter-spacing:0;text-transform:none;outline:none}.fld input:focus{border-color:var(--a)}.fld option{color:#000}
+.opts{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.opts button{border:1px solid var(--bd);background:rgba(255,255,255,.04);color:var(--b);border-radius:12px;padding:8px 12px;font-size:12px}.opts button.on{background:var(--a);color:#12200f;border-color:var(--a)}.opts button:disabled{opacity:.35;text-decoration:line-through}
+.ok{text-align:center}.ok .c{width:80px;height:80px;margin:0 auto 12px;border-radius:50%;border:2px solid var(--a);display:grid;place-items:center;font-size:34px;color:var(--a);animation:pp .6s cubic-bezier(.34,1.56,.64,1)}@keyframes pp{from{transform:scale(0)}}
+.spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--a);border-radius:50%;animation:sp 1s linear infinite;margin:18px auto}@keyframes sp{to{transform:rotate(360deg)}}
+#toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);padding:10px 22px;border-radius:30px;background:rgba(20,40,20,.92);border:1px solid rgba(180,210,140,.3);color:var(--a);font-size:12px;opacity:0;transition:.4s;z-index:300;pointer-events:none;width:max-content;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}.plan{grid-template-columns:1fr 1fr}.stage{grid-column:1/-1;order:-1}.tline{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.card .b{padding:10px 12px 12px}.card h3{font-size:15px}.card p{display:none}.plan{grid-template-columns:1fr}.tools{flex-direction:row;flex-wrap:wrap}.tools h4{width:100%}.tl{flex:1 1 45%;padding:8px}.stage{min-height:340px}.sec{padding:90px 16px}.stats{gap:30px}.tline{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}[data-r]{opacity:1;transform:none}}
+</style>
+<script type="importmap">
+{"imports":{
+"three":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.webgpu.js",
+"three/webgpu":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.webgpu.js",
+"three/tsl":"https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.tsl.js"}}
+</script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#s0">Верда</a>
+  <div class="links"><a href="#s1">Каталог</a><a href="#s2">Планировщик</a><a href="#s3">Сезон</a><a href="#s4">Агроном</a></div>
+  <div class="nr"><button class="nb" id="cartB">Корзина<em id="cnt">0</em></button></div>
+</nav>
+
+<div id="wrap">
+  <section class="sec hero" id="s0">
+    <span class="tag" data-r>Садовый маркет · Копейск и Челябинск</span>
+    <h1 data-r>Сад, где<br>всё <em>растёт</em></h1>
+    <p class="sub" data-r>Проведите курсором по траве — она живая. Спланируйте участок в 3D, получите готовый список покупок и закажите доставку ко времени.</p>
+    <div class="row" data-r><a class="btn fill" href="#s2">Спланировать участок</a><a class="btn" href="#s1">Смотреть каталог</a></div>
+  </section>
+
+  <section class="sec" id="s1">
+    <span class="tag" data-r>Каталог</span>
+    <h2 data-r>Выберите <em>лучшее</em> для сада</h2>
+    <div class="chips" data-r id="chips"></div>
+    <div class="grid" id="grid"></div>
+    <button class="btn" id="more">Показать ещё</button>
+  </section>
+
+  <section class="sec" id="s2">
+    <span class="tag" data-r>3D-планировщик участка</span>
+    <h2 data-r>Нарисуйте свой <em>сад</em> — мы посчитаем всё до последнего пакета грунта</h2>
+    <div class="plan" data-r>
+      <div class="tools glass" id="tools"><h4>Что разместить</h4></div>
+      <div class="stage glass"><div class="vw"><button id="v3" class="on">3D</button><button id="v2">План</button><button id="vc">Очистить</button></div>
+        <div class="scene"><div class="plot iso" id="plot"></div></div>
+        <input type="range" class="rot" id="rot" min="-80" max="0" value="-38" aria-label="Поворот участка">
+        <p class="hint">Клик — поставить, повторный клик — убрать. Зажмите и ведите, чтобы рисовать. 1 клетка = 1 м².</p></div>
+      <div class="sum glass"><h4>Ваш участок</h4><div class="ar" id="ar"></div><div class="sl" id="sl"></div><div class="tot"><span>Итого</span><b id="tot">0 ₽</b></div><button class="btn fill" id="toCart">Всё в корзину</button><button class="btn" id="toAgr">Отправить агроному</button></div>
+    </div>
+  </section>
+
+  <section class="sec" id="s3">
+    <span class="tag" data-r>Почему Верда</span>
+    <h2 data-r>Ведём ваш сад <em>весь сезон</em>, а не только продаём</h2>
+    <div class="stats">
+      <div data-r><div class="num" data-n="18000">0</div><div class="unit">садоводов с нами</div></div>
+      <div data-r><div class="num" data-n="1200">0</div><div class="unit">товаров в наличии</div></div>
+      <div data-r><div class="num">2 ч</div><div class="unit">доставка ко времени</div></div>
+      <div data-r><div class="num">30</div><div class="unit">дней гарантии приживаемости</div></div>
+    </div>
+    <div class="tline" id="tline" data-r></div>
+  </section>
+
+  <section class="sec" id="s4">
+    <span class="tag" data-r>Агроном онлайн</span>
+    <h2 data-r>Спросите <em>агронома</em> — ответит за минуту</h2>
+    <div class="chat glass" data-r><div class="ch"><div class="av" id="av"></div><div><b style="color:var(--h)">Анна, агроном «Верды»</b><small>● онлайн · стаж 14 лет</small></div></div><div class="msgs" id="msgs"></div><div class="qk" id="qk"></div></div>
+    <a class="btn fill" href="#s1" data-r>Перейти к покупкам →</a>
+  </section>
+</div>
+
+<footer id="s5">
+  <div class="fi">
+    <div><div class="logo" style="margin-bottom:12px">Верда</div><p>Садовый маркет для тех, кто строит зелёный дом. Копейск, ул. Садовая, 1 · ежедневно 9:00–20:00 · +7-777-777-77-77</p><p>© 2026 · Все данные на сайте — образец</p></div>
+    <div><div class="ft">Покупателям</div><a href="#s1">Каталог</a><a href="#s2">Планировщик участка</a><a href="#s4">Агроном онлайн</a></div>
+    <div><div class="ft">Сервис</div><a href="javascript:void(0)">Доставка ко времени</a><a href="javascript:void(0)">Посадка и уход</a><a href="javascript:void(0)">Гарантия</a></div>
+  </div>
+</footer>
+<div class="drw" id="cart"><div class="ov" data-close></div><div class="pn"><div class="dh"><h3>Корзина</h3><button class="x" data-close>✕</button></div><div class="db" id="cl"></div><div class="df" id="cf"></div></div></div>
+<div class="mod" id="mod"><div class="mb" id="mb"></div></div>
+<div id="toast"></div>
+<a href="../index.html" class="tarify-back" aria-label="Вернуться ко всем тарифам" style="position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:11px 16px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;font:600 14px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-decoration:none;box-shadow:0 8px 22px -6px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)">← Все тарифы</a>
+<script>
+/* Фото (Unsplash, бесплатная лицензия). Если фото не загрузилось — мягкая иллюстрация-листок */
+var LEAF="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDE8CF"/><stop offset="1" stop-color="#B9CFA0"/></linearGradient></defs><rect width="400" height="300" fill="url(#g)"/><path d="M200 70c60 20 90 70 70 140-70-10-110-60-70-140z" fill="#7FA35B" opacity=".75"/><path d="M200 70c-50 30-70 80-40 140 50-20 70-70 40-140z" fill="#5E8A44" opacity=".7"/><path d="M200 230V95" stroke="#3F6B2E" stroke-width="4" fill="none"/></svg>');
+function phURL(id,w){return 'https://images.unsplash.com/photo-'+id+'?w='+(w||800)+'&q=72&auto=format&fit=crop'}
+function gpic(id,alt,w,extra){w=w||800;var h=Math.round(w/2),b=Math.min(2400,w*1.6|0);return '<img src="'+phURL(id,w)+'" srcset="'+phURL(id,h)+' '+h+'w, '+phURL(id,w)+' '+w+'w, '+phURL(id,b)+' '+b+'w" sizes="(max-width:760px) 100vw, 50vw" alt="'+(alt||'').replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" '+(extra||'')+' onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=LEAF">'}
+function fillPics(root){(root||document).querySelectorAll('[data-ph]').forEach(function(el){if(el.dataset.done)return;el.dataset.done=1;el.insertAdjacentHTML('afterbegin',gpic(el.dataset.ph,el.dataset.alt||'',+el.dataset.w||900))})}
+
+/* Каталог «Верда» (образец). [фото, название, категория, цена, старая цена, описание, хит/новинка] */
+var CATS=['Семена','Рассада и саженцы','Инструменты','Полив','Грунты и удобрения','Горшки и декор','Теплицы и укрытия','Сад и отдых'];
+var GOODS=[
+['1777620843343-851c08e1a336','Семена томатов «Бычье сердце»','Семена',89,0,'Крупноплодный сорт, 20 семян. Для теплицы и открытого грунта.','hit'],
+['1601568656750-bf1a9c205613','Семена огурцов «Кураж F1»','Семена',119,0,'Самоопыляемый гибрид, 10 семян. Урожай через 40 дней.',''],
+['1647553756926-21a62021b9d2','Набор семян «Огород за неделю»','Семена',690,890,'12 пакетов: томаты, огурцы, перец, зелень, редис.','hit'],
+['1759693233180-866a8577603f','Луковицы тюльпанов, 10 шт','Семена',590,0,'Микс сортов «Дарвин». Сажать осенью — цветут в мае.','new'],
+['1724893972463-c5744b496ee5','Газонная трава «Спорт», 1 кг','Семена',490,0,'Устойчива к вытаптыванию. Хватает на 40 м².',''],
+['1523348837708-15d4a09cfac2','Рассада томатов, кассета 6 шт','Рассада и саженцы',390,0,'Крепкая рассада 45 дней, сорт «Розовый мёд».','hit'],
+['1663500004095-a7482241694c','Рассада перца, 6 шт','Рассада и саженцы',290,0,'«Калифорнийское чудо» — сладкий, толстостенный.',''],
+['1757111084609-17bbd129a7f6','Рассада огурцов, 6 шт','Рассада и саженцы',320,0,'Партенокарпик для теплиц Урала.',''],
+['1734313237433-9b0ecafc2d42','Клубника «Виктория», 5 кустов','Рассада и саженцы',650,0,'Зимостойкая, ягода до 40 г. Урожай на следующий год.',''],
+['1784641338195-8ba9f4cb56ac','Саженец яблони «Антоновка»','Рассада и саженцы',1290,1490,'2 года, закрытая корневая система. Для Урала.',''],
+['1530906622963-8a60586a49c7','Роза чайно-гибридная','Рассада и саженцы',790,0,'Красная, цветёт до заморозков. Высота 80 см.','hit'],
+['1549100789-756142409c2e','Гортензия крупнолистная','Рассада и саженцы',1490,0,'Голубые соцветия, контейнер 5 л.','new'],
+['1579664872746-55e2a805d705','Пион «Сара Бернар»','Рассада и саженцы',690,0,'Классический розовый пион, деление 3–5 почек.',''],
+['1611625105602-42ee06be977e','Лаванда узколистная','Рассада и саженцы',450,0,'Зимует без укрытия. Аромат на весь участок.',''],
+['1761760751319-1d45d08f2712','Туя западная «Смарагд»','Рассада и саженцы',1190,0,'Высота 80–100 см. Живая изгородь за сезон.',''],
+['1786073486821-3b8cf993cea7','Базилик в горшке','Рассада и саженцы',190,0,'Зелёный, ароматный. На подоконник и грядку.',''],
+['1523301551780-cd17359a95d0','Секатор Pro','Инструменты',1490,1790,'Закалённая сталь, срез до 20 мм.','hit'],
+['1597764983031-60a74afb8692','Лопата штыковая','Инструменты',1290,0,'Нержавеющая сталь, черенок из ясеня.',''],
+['1536506124370-c063b05b9e22','Грабли веерные','Инструменты',790,0,'Для листьев и газона, 22 зубца.',''],
+['1555955207-b96159c16808','Рыхлитель ручной','Инструменты',450,0,'Три зуба, эргономичная рукоять.',''],
+['1543309959-4d45288d1629','Кусторез аккумуляторный','Инструменты',8990,0,'Нож 52 см, 60 минут работы от одной зарядки.','new'],
+['1458245201577-fc8a130b8829','Газонокосилка электрическая','Инструменты',12490,13990,'1600 Вт, ширина 38 см, травосборник 45 л.',''],
+['1715274036728-4385d95a5e9f','Тачка садовая 100 л','Инструменты',4890,0,'Оцинкованный кузов, литое колесо.',''],
+['1710666184386-9f42d0227237','Перчатки садовые','Инструменты',290,0,'С латексным покрытием, защита от шипов.',''],
+['1599277100479-3252d492a19a','Лейка оцинкованная 10 л','Полив',990,0,'Съёмная насадка-душ, не ржавеет.',''],
+['1485627658391-1365e4e0dbfe','Шланг армированный 20 м','Полив',1590,0,'Не перегибается, выдерживает −20…+60 °C.','hit'],
+['1692369584496-3216a88f94c1','Дождеватель круговой','Полив',690,0,'Радиус полива до 8 м, на колышке.',''],
+['1748432171507-c1d62fe2e859','Капельный полив на 30 растений','Полив',2490,2990,'Таймер, фильтр, капельницы. Монтаж за час.','new'],
+['1697293585549-6eb147d2a8f4','Пистолет-распылитель','Полив',590,0,'7 режимов, мягкая рукоять.',''],
+['1625246333195-78d9c38ad449','Грунт универсальный 50 л','Грунты и удобрения',490,0,'Для рассады, цветов и овощей.','hit'],
+['1642952273588-ed6fa28870ac','Биогумус 5 л','Грунты и удобрения',390,0,'Органическое удобрение, повышает урожай.',''],
+['1649043601834-21dbcc89474b','Мульча из коры сосны 60 л','Грунты и удобрения',590,0,'Держит влагу, защищает от сорняков.',''],
+['1716903282677-3a1b5c936b41','Компостер садовый 800 л','Грунты и удобрения',3490,0,'Перегной за один сезон.',''],
+['1562722902-d33533894eea','Торф верховой 50 л','Грунты и удобрения',420,0,'Раскисленный, для рассады и газона.',''],
+['1778486054098-b243c5fbf193','Горшок терракотовый 25 см','Горшки и декор',590,0,'Натуральная глина, дренажное отверстие.',''],
+['1783930523798-475afccb718d','Набор кашпо, 3 шт','Горшки и декор',1890,0,'Керамика, глазурь, 12/16/20 см.','new'],
+['1590238750866-f99d3febe496','Скворечник деревянный','Горшки и декор',690,0,'Сосна, готов к установке.',''],
+['1718012934624-07822822df8c','Кормушка для птиц','Горшки и декор',790,0,'Металл, вмещает 1 кг корма.',''],
+['1640365554715-cfbb20efcf91','Фонарь на солнечной батарее','Горшки и декор',390,0,'Включается сам в сумерках. 8 часов света.',''],
+['1524486361537-8ad15938e1a3','Теплица из поликарбоната 3×6 м','Теплицы и укрытия',34900,39900,'Профиль 40×20, снеговая нагрузка 240 кг/м².','hit'],
+['1591754060004-f91c95f5cf05','Парник «Подснежник» 4 м','Теплицы и укрытия',2490,0,'Дуги и спанбонд, ставится за 15 минут.',''],
+['1516253593875-bd7ba052fbc5','Агроволокно 60 г/м², 10 м','Теплицы и укрытия',690,0,'Защита от заморозков до −5 °C.',''],
+['1601654253194-260e0b6984f9','Комплект садовой мебели','Сад и отдых',24900,0,'Стол и 4 стула, массив сосны.',''],
+['1571425046056-cfc17c664e57','Качели садовые','Сад и отдых',18900,21900,'Ротанг, мягкие подушки, до 200 кг.',''],
+['1623625434531-d130448273c1','Кресло из ротанга','Сад и отдых',6990,0,'Всесезонное, с подушкой.','']
+];
+var PH={hero:'1658865696467-7e6de48922fe',display:'1752401961634-3c0f9eee70db',inside:'1508857650881-64475119d798',house:'1462530348824-65844534c0ed',flowers:'1723049492083-de2b02c48e81',plant:'1611843467160-25afb8df1074',soil:'1597868165956-03a6827955b1',bed:'1591857177580-dc82b9ac4e1e',harvest:'1624668430039-0175a0fbf006',hat:'1729009511364-7d0c96a7ac0c',arch:'1764937476163-b58c6046932a',cottage:'1790540944771-3ad59671c666',pumpkin:'1506917728037-b6af01a7d403',succ:'1520157646479-22f25713523d',shop:'1631942195955-e1639f95ba4d',lav:'1600759487717-62bbb608106e',lawn:'1729058015948-592a8e4a1772',tulip:'1746016321729-221b4cc0fc6a'};
+function rub(n){return n.toLocaleString('ru-RU').replace(/,/g,' ')+' ₽'}
+
+function $(s){return document.querySelector(s)}
+function show(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(show.t);show.t=setTimeout(function(){t.classList.remove('on')},1800)}
+var P=GOODS.map(function(g,i){return {id:i,ph:g[0],n:g[1],c:g[2],p:g[3],o:g[4],d:g[5],t:g[6]}});
+var cart={};
+/* каталог */
+var cats=['Все','Рассада и саженцы','Инструменты','Полив','Семена','Теплицы и укрытия','Сад и отдых'],cur='Все',lim=8;
+function card(p,i){var q=cart[p.id];return '<div class="card glass" style="animation-delay:'+(i%8*.06)+'s"><div class="im">'+gpic(p.ph,p.n,600)+(p.o?'<span class="bdg s">−'+Math.round((1-p.p/p.o)*100)+'%</span>':p.t=='hit'?'<span class="bdg">Хит</span>':p.t=='new'?'<span class="bdg">Новинка</span>':'')+'</div><div class="b"><h3>'+p.n+'</h3><p>'+p.d+'</p><div class="pr"><div class="price">'+rub(p.p)+(p.o?'<s>'+rub(p.o)+'</s>':'')+'</div><button class="add'+(q?' in':'')+'" data-add="'+p.id+'" aria-label="В корзину">'+(q?q+' в корзине':'+')+'</button></div></div></div>'}
+function render(){$('#chips').innerHTML=cats.map(function(c){return '<button class="chip '+(c==cur?'act':'')+'">'+c+'</button>'}).join('');var r=P.filter(function(p){return cur=='Все'||p.c==cur});$('#grid').innerHTML=r.slice(0,lim).map(card).join('');$('#more').style.display=r.length>lim?'':'none'}
+$('#chips').onclick=function(e){if(e.target.classList.contains('chip')){cur=e.target.textContent;lim=8;render()}};$('#more').onclick=function(){lim+=8;render()};render();
+/* корзина */
+function cnt(){var n=0;for(var k in cart)n+=cart[k];return n}function sum(){var s=0;for(var k in cart)s+=P[k].p*cart[k];return s}
+function upd(){$('#cnt').textContent=cnt();var b=$('#cartB');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');render();rc()}
+function rc(){var k=Object.keys(cart),s=sum();$('#cl').innerHTML=k.length?k.map(function(id){var p=P[id];return '<div class="ci"><div class="t">'+gpic(p.ph,p.n,160)+'</div><div>'+p.n+'<div class="q"><button data-m="'+id+'">−</button>'+cart[id]+'<button data-add="'+id+'">+</button></div></div><span style="color:var(--a)">'+rub(p.p*cart[id])+'</span></div>'}).join(''):'<p style="text-align:center;color:var(--b);padding:50px 0;font-size:13px">Корзина пуста.<br>Нарисуйте участок в планировщике — список соберётся сам.</p>';
+ $('#cf').innerHTML=k.length?'<div class="ln"><span>Товары ('+cnt()+')</span><span>'+rub(s)+'</span></div><div class="ln"><span>Бонусы 5%</span><span>+'+Math.round(s*.05)+'</span></div><div class="ln t"><span>Итого</span><span>'+rub(s)+'</span></div><button class="btn fill" style="width:100%;margin-top:12px" id="go">Оформить заказ</button>':'';var g=$('#go');if(g)g.onclick=checkout}
+document.addEventListener('click',function(e){var t=e.target.closest('[data-add],[data-m],[data-close]');if(!t)return;if(t.dataset.add!=null){var id=t.dataset.add;cart[id]=(cart[id]||0)+1;if(cart[id]==1)show('Добавлено в корзину');upd()}else if(t.dataset.m!=null){if(--cart[t.dataset.m]<=0)delete cart[t.dataset.m];upd()}else{$('#cart').classList.remove('on');$('#mod').classList.remove('on')}});
+$('#cartB').onclick=function(){rc();$('#cart').classList.add('on')};$('#mod').onclick=function(e){if(e.target.id=='mod')this.classList.remove('on')};
+function modal(h){$('#mb').innerHTML='<button class="x" data-close>✕</button>'+h;$('#mod').classList.add('on')}
+function checkout(){$('#cart').classList.remove('on');var s=sum(),now=new Date(),h=now.getHours(),days=[];for(var i=0;i<5;i++){var d=new Date(now.getTime()+i*864e5);days.push((i==0?'Сегодня ':i==1?'Завтра ':'')+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0'))}
+ var di=h>=18?1:0,sl=['9–11','11–13','13–15','15–17','17–19','19–21'];
+ modal('<h3>Оформление</h3><form id="of"><label class="fld">Имя<input required name="n"></label><label class="fld">Телефон<input required type="tel" name="p" placeholder="+7"></label><label class="fld">Адрес доставки<input required name="a" placeholder="Город, улица, дом / СНТ, участок"></label><div class="fld">Дата</div><div class="opts" id="dd">'+days.map(function(d,i){return '<button type="button" data-i="'+i+'"'+(i==0&&h>=18?' disabled':'')+(i==di?' class="on"':'')+'>'+d+'</button>'}).join('')+'</div><div class="fld">Интервал</div><div class="opts" id="ss"></div><div class="fld">Оплата</div><div class="opts" id="pp"><button type="button" class="on" data-p="card">Картой онлайн</button><button type="button" data-p="sbp">СБП</button><button type="button" data-p="cash">При получении</button></div><div class="ln"><span>Доставка</span><span>'+(s>=5000?'бесплатно':rub(490))+'</span></div><div class="ln t"><span>К оплате</span><span>'+rub(s+(s>=5000?0:490))+'</span></div><button class="btn fill" style="width:100%;margin-top:12px">Оплатить и оформить</button></form>');
+ function ss(){$('#ss').innerHTML=sl.map(function(t,i){return '<button type="button"'+(di==0&&9+i*2<=h+1?' disabled':'')+'>'+t+'</button>'}).join('');var f=$('#ss button:not(:disabled)');if(f)f.classList.add('on')}ss();
+ function grp(id,cb){$(id).onclick=function(e){var b=e.target.closest('button');if(!b||b.disabled)return;this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x==b)});cb&&cb(b)}}
+ grp('#dd',function(b){di=+b.dataset.i;ss()});grp('#ss');grp('#pp');
+ $('#of').onsubmit=function(e){e.preventDefault();var pay=$('#pp .on').dataset.p,slot=($('#ss .on')||{}).textContent||'',no='В-'+Math.floor(10000+Math.random()*89999);
+  $('#mb').innerHTML='<div class="ok"><div class="spin"></div><p style="color:var(--b)">'+(pay=='cash'?'Оформляем заказ…':'Проводим оплату…')+'</p></div>';
+  setTimeout(function(){cart={};upd();modal('<div class="ok"><div class="c">✓</div><h3>Заказ '+no+' принят</h3><p style="color:var(--b);font-size:14px;line-height:1.6">Доставим '+days[di].toLowerCase()+(slot?', с '+slot.replace('–',' до ')+' ч':'')+'.<br>Анна-агроном пришлёт памятку по посадке в Telegram,<br>а за день до доставки — напоминание.</p><button class="btn fill" data-close style="margin-top:14px">Готово</button></div>')},1500)}}
+/* 3D-планировщик */
+var T=[['bed','Грядка','#8a5a32','🥬',[[29,.5],[5,.17]],'грунт 0,5 мешка + рассада'],['gh','Теплица','#cfe7f2','🏠',[[39,1/18],[5,.5],[27,1/18]],'1/18 теплицы 3×6 + полив'],['tree','Плодовое дерево','#2f6b2a','🌳',[[9,1],[30,.2]],'саженец + биогумус'],['flow','Цветник','#d9709a','🌸',[[10,.5],[11,.25],[31,.3]],'розы, гортензии, мульча'],['lawn','Газон','#6fae3f','',[[4,.025]],'семена 25 г/м²'],['path','Дорожка','#c9b48f','',[[31,.4]],'мульча из коры'],['rest','Зона отдыха','#b9874e','🪑',[[42,1/9],[38,.2]],'мебель + фонари']];
+var Z={bed:16,gh:34,tree:40,flow:14,lawn:3,path:2,rest:12},tool='bed',grid=Array(96).fill(null),drag=false;
+$('#tools').insertAdjacentHTML('beforeend',T.map(function(t,i){return '<button class="tl'+(i?'':' on')+'" data-t="'+t[0]+'"><i style="background:'+t[2]+'"></i><span>'+t[1]+'<small>'+t[5]+'</small></span></button>'}).join(''));
+$('#tools').onclick=function(e){var b=e.target.closest('.tl');if(!b)return;tool=b.dataset.t;this.querySelectorAll('.tl').forEach(function(x){x.classList.toggle('on',x==b)})};
+var plot=$('#plot');plot.innerHTML=grid.map(function(_,i){return '<div class="cell" data-c="'+i+'"></div>'}).join('');
+function paint(i,erase){var t=erase?null:tool;if(grid[i]==t)return;grid[i]=t;var c=plot.children[i];c.innerHTML='';if(t){var d=T.find(function(x){return x[0]==t});c.innerHTML='<b class="pop" style="background:'+d[2]+';--z:'+Z[t]+'px'+(t=='gh'?';opacity:.85;box-shadow:inset 0 0 0 2px #fff':'')+'"><span>'+d[3]+'</span></b>'}summary()}
+plot.addEventListener('pointerdown',function(e){var c=e.target.closest('.cell');if(!c)return;e.preventDefault();var i=+c.dataset.c;drag=grid[i]==tool?'erase':'paint';paint(i,drag=='erase')});
+plot.addEventListener('pointermove',function(e){if(!drag)return;var el=document.elementFromPoint(e.clientX,e.clientY),c=el&&el.closest('.cell');if(c&&plot.contains(c))paint(+c.dataset.c,drag=='erase')});
+addEventListener('pointerup',function(){drag=false});
+$('#v3').onclick=function(){plot.classList.add('iso');this.classList.add('on');$('#v2').classList.remove('on');$('#rot').style.visibility=''};
+$('#v2').onclick=function(){plot.classList.remove('iso');this.classList.add('on');$('#v3').classList.remove('on');$('#rot').style.visibility='hidden'};
+$('#vc').onclick=function(){grid.forEach(function(_,i){if(grid[i])paint(i,true)})};
+$('#rot').oninput=function(){plot.style.setProperty('--rz',this.value+'deg');plot.querySelectorAll('.cell b span').forEach(function(s){s.style.transform='rotateZ('+(-this.value)+'deg) rotateX(-56deg) translateZ(14px)'},this)};
+var need={};
+function summary(){var c={};grid.forEach(function(t){if(t)c[t]=(c[t]||0)+1});need={};
+ T.forEach(function(t){if(!c[t[0]])return;t[4].forEach(function(x){need[x[0]]=(need[x[0]]||0)+x[1]*c[t[0]]})});
+ var s=0,rows=Object.keys(need).map(function(id){var q=Math.max(1,Math.ceil(need[id]-1e-9));need[id]=q;s+=P[id].p*q;return '<div><span>'+P[id].n+' × '+q+'</span><b>'+rub(P[id].p*q)+'</b></div>'});
+ var used=grid.filter(Boolean).length;$('#ar').innerHTML='<div><b>'+used+' м²</b>занято</div><div><b>'+(96-used)+' м²</b>свободно</div><div><b>'+Object.keys(c).length+'</b>зон</div>';
+ $('#sl').innerHTML=rows.length?rows.join(''):'<p style="color:var(--b)">Выберите элемент слева и нарисуйте его на участке.</p>';$('#tot').textContent=rub(s)}
+$('#toCart').onclick=function(){var k=Object.keys(need);if(!k.length){show('Сначала нарисуйте участок');return}k.forEach(function(id){cart[id]=(cart[id]||0)+need[id]});upd();show('Список с плана добавлен в корзину');$('#cart').classList.add('on')};
+$('#toAgr').onclick=function(){if(!grid.some(Boolean)){show('Сначала нарисуйте участок');return}document.getElementById('s4').scrollIntoView({behavior:'smooth'});setTimeout(function(){say('Отправила план вашего участка. Посмотрите, пожалуйста!',true);answer('Получила план! Теплицу лучше развернуть торцом на юг, а плодовые деревья посадить не ближе 3 м от грядок — иначе будут затенять. Остальное отлично 👍')},700)};
+/* стартовый пример плана */
+[[0,'lawn'],[1,'lawn'],[2,'lawn'],[12,'lawn'],[13,'path'],[25,'path'],[37,'path'],[49,'path'],[14,'bed'],[15,'bed'],[16,'bed'],[26,'bed'],[27,'bed'],[28,'bed'],[8,'gh'],[9,'gh'],[10,'gh'],[20,'gh'],[21,'gh'],[22,'gh'],[59,'tree'],[83,'tree'],[71,'flow'],[72,'flow'],[73,'flow'],[90,'rest'],[91,'rest'],[78,'rest'],[79,'rest']].forEach(function(x){tool=x[1];paint(x[0])});tool='bed';
+plot.querySelectorAll('.cell b').forEach(function(b){b.classList.remove('pop')});
+/* сезонный таймлайн */
+var TL=[['Март','посев на рассаду'],['Апрель','обрезка сада'],['Май','рассада в теплицу'],['Июнь','высадка в грунт'],['Июль','подкормки, защита'],['Август','урожай'],['Сентябрь','посадка саженцев'],['Октябрь','луковичные под зиму']],mn=new Date().getMonth()-2;
+$('#tline').innerHTML=TL.map(function(t,i){return '<div class="tm glass'+(i==mn?' now':'')+'"><b>'+t[0]+'</b>'+t[1]+(i==mn?'<br><span style="color:var(--a)">● сейчас</span>':'')+'</div>'}).join('');
+/* агроном */
+$('#av').innerHTML=gpic(PH.hat,'Агроном',120);
+var QA=[['Когда сажать томаты в теплицу?','В Челябинской области — с 15–20 мая, когда земля в теплице прогреется до +12 °C. Рассада должна быть 50–60 дней. Подойдёт «Розовый мёд» из нашего каталога.'],['Как укрыть розы на зиму?','В середине октября окучьте куст на 20 см, обрежьте до 40 см и накройте агроволокном 60 г/м² в 2 слоя. Агроволокно есть в разделе «Теплицы и укрытия».'],['Чем подкормить огурцы?','Каждые 10–14 дней — биогумус, 50 мл на 10 л воды. В плодоношение добавьте калий. Капельный полив сильно облегчит жизнь в жару.'],['Почему желтеют листья у туи?','Чаще всего — весенний ожог или нехватка влаги. Притените туи от солнца в марте и замульчируйте приствольный круг корой.']];
+function say(t,u){var m=document.createElement('div');m.className='m '+(u?'u':'a');m.textContent=t;$('#msgs').appendChild(m);$('#msgs').scrollTop=1e6}
+function answer(t){var m=document.createElement('div');m.className='m a';m.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';$('#msgs').appendChild(m);$('#msgs').scrollTop=1e6;setTimeout(function(){m.textContent=t;$('#msgs').scrollTop=1e6},1300)}
+say('Здравствуйте! Я Анна, агроном «Верды». Подскажу, что и когда сажать, и соберу список покупок под ваш участок. Выберите вопрос 👇');
+$('#qk').innerHTML=QA.map(function(q,i){return '<button data-q="'+i+'">'+q[0]+'</button>'}).join('');
+$('#qk').onclick=function(e){var b=e.target.closest('button');if(!b)return;var q=QA[b.dataset.q];say(q[0],true);answer(q[1])};
+/* появление и счётчики */
+function count(el){var t=+el.dataset.n,s=performance.now();(function f(n){var p=Math.min((n-s)/1800,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString('ru-RU')+(p>=1?'+':'');if(p<1)requestAnimationFrame(f)})(s)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');e.target.querySelectorAll('[data-n]').forEach(count);if(e.target.dataset.n)count(e.target.querySelector('.num')||e.target);io.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px -10% 0px'});
+document.querySelectorAll('[data-r]').forEach(el=>io.observe(el));
+document.querySelectorAll('a[href^="#s"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}));
+</script>
+<script type="module">
+try{
+const THREE=await import('three/webgpu');
+const {Fn,uniform,float,vec3,instancedArray,instanceIndex,uv,positionGeometry,sin,cos,pow,smoothstep,mix,sqrt,select,hash,time,deltaTime,PI,mx_noise_float}=await import('three/tsl');
+
+const N=283*283,FIELD=30;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color('#000');
+const camera=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,100);
+const renderer=new THREE.WebGPURenderer({antialias:true});
+renderer.setPixelRatio(innerWidth<1200?1.5:Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+document.body.prepend(renderer.domElement);
+await renderer.init();
+
+const bladeData=instancedArray(N,'vec4'),bendState=instancedArray(N,'vec4'),bladeBound=instancedArray(N,'float');
+const mouseWorld=uniform(new THREE.Vector3(99999,0,99999));
+const camWorld=uniform(new THREE.Vector3(99999,0,99999));
+const camR=uniform(15),camS=uniform(5.9);
+const mouseR=6.1,mouseS=4.0,outR=9.4,outS=1.45;
+const windSpeed=1.3,windAmp=.21,bladeW=4.0,tipW=.19,bladeH=1.6,hVar=.5,lean=1.1,colVar=.93;
+const cBase=uniform(new THREE.Color().setRGB(.0044,.013,.0012));
+const cTip=uniform(new THREE.Color().setRGB(.5776,.4793,.0513));
+const cGold=uniform(new THREE.Color().setRGB(.6584,.4793,.0395));
+const cGreen=uniform(new THREE.Color().setRGB(.0685,.1946,.007));
+const cMid=uniform(new THREE.Color().setRGB(.0262,.0762,.0044));
+const fogStart=6.5,fogEnd=12;
+
+const noise2D=Fn(([x,z])=>mx_noise_float(vec3(x,float(0),z)).mul(.5).add(.5));
+
+const computeInit=Fn(()=>{
+  const b=bladeData.element(instanceIndex);
+  const col=instanceIndex.mod(283),row=instanceIndex.div(283);
+  const jx=hash(instanceIndex).sub(.5),jz=hash(instanceIndex.add(7919)).sub(.5);
+  const wx=col.toFloat().add(jx).div(float(283)).sub(.5).mul(FIELD);
+  const wz=row.toFloat().add(jz).div(float(283)).sub(.5).mul(FIELD);
+  b.x.assign(wx);b.y.assign(wz);
+  b.z.assign(hash(instanceIndex.add(1337)).mul(PI.mul(2)));
+  const n1=noise2D(wx.mul(.3),wz.mul(.3));
+  const n2=noise2D(wx.mul(4.5).add(50),wz.mul(4.5).add(50));
+  b.w.assign(n1.mul(1.85).sub(.2).add(n2.mul(.4)).max(0));
+  const d=sqrt(wx.mul(wx).add(wz.mul(wz)));
+  const en=noise2D(wx.mul(.25).add(100),wz.mul(.25).add(100));
+  const maxR=float(12).add(en.sub(.5).mul(6));
+  const bd=float(1).sub(smoothstep(maxR.sub(1.5),maxR,d));
+  bladeBound.element(instanceIndex).assign(select(bd.lessThan(.05),float(0),bd));
+})().compute(N);
+
+const computeUpdate=Fn(()=>{
+  const b=bladeData.element(instanceIndex),bend=bendState.element(instanceIndex);
+  const bx=b.x,bz=b.y;
+  const w1=sin(bx.mul(.35).add(bz.mul(.12)).add(time.mul(windSpeed)));
+  const w2=sin(bx.mul(.18).add(bz.mul(.28)).add(time.mul(windSpeed*.67)).add(1.7));
+  const lw=deltaTime.mul(4).saturate();
+  bend.x.assign(mix(bend.x,w1.add(w2).mul(windAmp),lw));
+  bend.y.assign(mix(bend.y,w1.sub(w2).mul(windAmp*.55),lw));
+  const push=(cx,cz,R,S)=>{
+    const dx=bx.sub(cx),dz=bz.sub(cz);
+    const d=sqrt(dx.mul(dx).add(dz.mul(dz))).add(1e-4);
+    const f=float(1).sub(d.div(R).saturate());
+    const inf=f.mul(f).mul(S);
+    return [dx.div(d).mul(inf),dz.div(d).mul(inf)];
+  };
+  const a=push(mouseWorld.x,mouseWorld.z,mouseR,mouseS);
+  const o=push(mouseWorld.x,mouseWorld.z,outR,outS);
+  const c=push(camWorld.x,camWorld.z,camR,camS);
+  const tx=a[0].add(o[0]).add(c[0]),tz=a[1].add(o[1]).add(c[1]);
+  const tm=sqrt(tx.mul(tx).add(tz.mul(tz)));
+  const cm=sqrt(bend.z.mul(bend.z).add(bend.w.mul(bend.w)));
+  const lm=select(tm.greaterThan(cm),deltaTime.mul(12),deltaTime.mul(1)).saturate();
+  bend.z.assign(mix(bend.z,tx,lm));bend.w.assign(mix(bend.w,tz,lm));
+})().compute(N);
+
+function bladeGeo(){
+  const segs=5,W=.055,H=1,v=[],n=[],u=[],ix=[];
+  for(let i=0;i<=segs;i++){const t=i/segs,y=t*H,hw=W*.5*(1-t*.82);v.push(-hw,y,0,hw,y,0);n.push(0,0,1,0,0,1);u.push(0,t,1,t)}
+  for(let i=0;i<segs;i++){const b=i*2;ix.push(b,b+1,b+2,b+1,b+3,b+2)}
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));
+  g.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));
+  g.setAttribute('uv',new THREE.Float32BufferAttribute(u,2));
+  g.setIndex(ix);return g;
+}
+
+const mat=new THREE.MeshBasicNodeMaterial({side:THREE.DoubleSide});
+mat.positionNode=Fn(()=>{
+  const b=bladeData.element(instanceIndex),bend=bendState.element(instanceIndex);
+  const bound=bladeBound.element(instanceIndex);
+  const vis=select(hash(instanceIndex.add(9999)).lessThan(.5),float(1),float(0));
+  const hs=float(.35).add(b.w).add(hash(instanceIndex.add(5555)).mul(hVar)).mul(bound).mul(vis);
+  const taper=float(1).sub(uv().y.mul(1-tipW));
+  const lx=positionGeometry.x.mul(bladeW).mul(taper).mul(hs.sign());
+  const ly=positionGeometry.y.mul(hs).mul(bladeH);
+  const cY=cos(b.z),sY=sin(b.z);
+  const rx=lx.mul(cY),rz=lx.mul(sY);
+  const bf=pow(uv().y,1.8);
+  const sbx=hash(instanceIndex.add(7777)).sub(.5).mul(lean);
+  const sbz=hash(instanceIndex.add(8888)).sub(.5).mul(lean);
+  const relX=rx.add(sbx.add(bend.x).add(bend.z).mul(bf).mul(bladeH));
+  const relZ=rz.add(sbz.add(bend.y).add(bend.w).mul(bf).mul(bladeH));
+  const ol=sqrt(rx.mul(rx).add(ly.mul(ly)).add(rz.mul(rz)));
+  const nl=sqrt(relX.mul(relX).add(ly.mul(ly)).add(relZ.mul(relZ)));
+  const s=ol.div(nl.max(1e-4));
+  return vec3(b.x.add(relX.mul(s)),ly.mul(s),b.y.add(relZ.mul(s)));
+})();
+mat.colorNode=Fn(()=>{
+  const t=uv().y,b=bladeData.element(instanceIndex);
+  const clump=b.w.saturate();
+  const gold=hash(instanceIndex.add(4242)).lessThan(.4);
+  const low=smoothstep(float(0),float(.45),t),up=smoothstep(float(.4),float(.85),t);
+  const tm=float(1-colVar).add(clump.mul(colVar));
+  const tip=mix(mix(cGreen,cTip,tm),mix(cGreen,cGold,tm),select(gold,float(1),float(0)));
+  const col=mix(mix(cBase,cMid,low),tip,up);
+  const d=sqrt(b.x.mul(b.x).add(b.y.mul(b.y)));
+  return mix(col,vec3(0,0,0),smoothstep(float(fogStart),float(fogEnd),d));
+})();
+mat.opacityNode=Fn(()=>{
+  const b=bladeData.element(instanceIndex);
+  const d=sqrt(b.x.mul(b.x).add(b.y.mul(b.y)));
+  return smoothstep(float(0),float(.1),uv().y).mul(float(1).sub(smoothstep(float(9),float(14),d)));
+})();
+mat.transparent=true;
+
+const grass=new THREE.InstancedMesh(bladeGeo(),mat,N);
+grass.frustumCulled=false;scene.add(grass);
+const dummy=new THREE.Object3D();
+for(let i=0;i<N;i++)grass.setMatrixAt(i,dummy.matrix);
+grass.instanceMatrix.needsUpdate=true;
+
+// Ключевые кадры камеры: [scroll, pos xyz, look xyz] — hero, каталог, преимущества, заказ, футер
+const kf=[
+ [0,-2.8,7.2,19.6,.5,1.5,.4],
+ [.2,7.5,10.9,15.8,0,0,.7],
+ [.4,-9,9.5,15,0,0,0],
+ [.6,-8,6.8,21.6,0,.2,0],
+ [.8,5,6.5,17,0,.6,0],
+ [1,0,16,8,0,0,0]
+];
+const ids=['s0','s1','s2','s3','s4'];
+function sync(){
+  const sc=document.documentElement.scrollHeight-innerHeight;
+  if(sc<=0)return;
+  ids.forEach((id,i)=>kf[i][0]=Math.min(1,document.getElementById(id).offsetTop/sc));
+  kf[5][0]=1;
+}
+sync();addEventListener('resize',()=>setTimeout(sync,100));addEventListener('load',()=>setTimeout(sync,300));
+function cam(t){
+  let i=0;
+  for(let j=1;j<kf.length;j++){if(kf[j][0]>=t){i=j-1;break}if(j===kf.length-1)i=j-1}
+  const a=kf[i],b=kf[i+1],r=b[0]-a[0];
+  let k=r>0?Math.max(0,Math.min(1,(t-a[0])/r)):0;k=k*k*(3-2*k);
+  return a.map((v,n)=>v+(b[n]-v)*k);
+}
+
+const rc=new THREE.Raycaster(),ndc=new THREE.Vector2(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),hit=new THREE.Vector3();
+addEventListener('mousemove',e=>{
+  ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);
+  rc.setFromCamera(ndc,camera);
+  if(rc.ray.intersectPlane(plane,hit))mouseWorld.value.copy(hit);
+});
+addEventListener('mouseleave',()=>mouseWorld.value.set(99999,0,99999));
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+
+await renderer.computeAsync(computeInit);
+renderer.domElement.style.cssText='opacity:0;transition:opacity .5s';
+const look=new THREE.Vector3(),clock=new THREE.Clock();
+let cur=0,target=0,first=true;
+function prog(){const s=document.documentElement.scrollHeight-innerHeight;return s>0?Math.min(1,Math.max(0,scrollY/s)):0}
+renderer.setAnimationLoop(()=>{
+  const dt=Math.min(clock.getDelta(),.05);
+  target=prog();
+  cur+=(target-cur)*Math.min(1,dt*6);
+  const c=cam(cur);
+  camera.position.set(c[1],c[2],c[3]);
+  look.set(c[4],c[5],c[6]);camera.lookAt(look);
+  camWorld.value.set(camera.position.x,0,camera.position.z);
+  const pc=Math.pow(Math.max(0,1-camera.position.y/10),2);
+  camR.value=Math.min(15,15*(.3+pc*.7));
+  camS.value=5.9*(.1+pc*.9);
+  renderer.compute(computeUpdate);
+  renderer.render(scene,camera);
+  if(first){first=false;renderer.domElement.style.opacity='1'}
+});
+}catch(err){
+  console.error(err);
+  document.body.classList.add('nogl');
+}
+
+</script>
+</body>
+</html>

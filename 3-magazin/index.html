@@ -1,6 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow">
-<title>Верда — интернет-магазин товаров для сада и огорода</title>
-<meta name="description" content="Интернет-магазин «Верда»: семена, рассада, саженцы, инструменты, полив, теплицы. Доставка по Копейску и Челябинску в день заказа.">
+<title>Садовир — интернет-магазин товаров для сада и огорода</title>
+<meta name="description" content="Интернет-магазин «Садовир»: семена, рассада, саженцы, инструменты, полив, теплицы. Доставка по Копейску и Челябинску в день заказа.">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#18221B;--mut:#66726A;--bg:#F4F6F1;--w:#fff;--g:#2C6E3F;--g1:#E6F0E0;--y:#F4C64E;--r:#D8553A;--line:#E3E8DE;--rad:16px}
@@ -75,7 +75,7 @@ footer{background:#14241A;color:#A7B4AA;padding:34px 0 100px;font-size:.86rem}fo
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <div class="top">🚚 Бесплатная доставка по Копейску и Челябинску от <b>3 000 ₽</b> · Самовывоз через 30 минут</div>
-<header><div class="w"><a class="logo" href="#"><i>🌿</i>Верда</a><div class="srch"><input id="q" placeholder="Найти: секатор, рассада томатов, шланг…" autocomplete="off"></div>
+<header><div class="w"><a class="logo" href="#"><i>🌿</i>Садовир</a><div class="srch"><input id="q" placeholder="Найти: секатор, рассада томатов, шланг…" autocomplete="off"></div>
 <div class="hb"><button class="ib" id="favB"><span>♡</span><small>Избранное</small><em id="favC">0</em></button><button class="ib" id="cartB"><span>🛒</span><small>Корзина</small><em id="cartC">0</em></button></div></div></header>
 <div class="w"><div class="slider" id="slider"></div>
 <div class="cats" id="cats"></div>
@@ -88,7 +88,7 @@ footer{background:#14241A;color:#A7B4AA;padding:34px 0 100px;font-size:.86rem}fo
  <div class="grid" id="grid"></div><div class="more"><button class="btn bl" id="moreB">Показать ещё</button></div></main></div>
 <div class="info"><div class="inf"><span>🚚</span><div><b>Доставка в день заказа</b><small>по Копейску и Челябинску</small></div></div><div class="inf"><span>🌱</span><div><b>Гарантия приживаемости</b><small>замена саженца 30 дней</small></div></div><div class="inf"><span>💳</span><div><b>Оплата при получении</b><small>наличными или картой</small></div></div><div class="inf"><span>🌻</span><div><b>Агроном на связи</b><small>бесплатная консультация</small></div></div></div>
 <h2 style="font-size:1.5rem">Отзывы покупателей</h2><div class="rev" id="rev"></div></div>
-<footer><div class="w"><div><b>Верда — товары для сада и огорода</b>Копейск, ул. Садовая, 1 · ежедневно 9:00–20:00<br>+7-777-777-77-77<br><br>© 2026 · Все данные на сайте — образец</div><div><b>Покупателям</b>Доставка и оплата<br>Гарантия и возврат<br>Самовывоз</div><div><b>Каталог</b>Семена и рассада<br>Инструменты<br>Теплицы</div></div></footer>
+<footer><div class="w"><div><b>Садовир — товары для сада и огорода</b>Копейск, ул. Садовая, 1 · ежедневно 9:00–20:00<br>+7-777-777-77-77<br><br>© 2026 · Все данные на сайте — образец</div><div><b>Покупателям</b>Доставка и оплата<br>Гарантия и возврат<br>Самовывоз</div><div><b>Каталог</b>Семена и рассада<br>Инструменты<br>Теплицы</div></div></footer>
 
 <div class="drw" id="cart"><div class="ov"></div><div class="pn"><div class="ph"><h3>Корзина</h3><button class="x" data-close>✕</button></div><div class="pb" id="cartL"></div><div class="pf" id="cartF"></div></div></div>
 <div class="drw" id="favs"><div class="ov"></div><div class="pn"><div class="ph"><h3>Избранное</h3><button class="x" data-close>✕</button></div><div class="pb" id="favL"></div></div></div>
@@ -102,7 +102,7 @@ function phURL(id,w){return 'https://images.unsplash.com/photo-'+id+'?w='+(w||80
 function gpic(id,alt,w,extra){w=w||800;var h=Math.round(w/2),b=Math.min(2400,w*1.6|0);return '<img src="'+phURL(id,w)+'" srcset="'+phURL(id,h)+' '+h+'w, '+phURL(id,w)+' '+w+'w, '+phURL(id,b)+' '+b+'w" sizes="(max-width:760px) 100vw, 50vw" alt="'+(alt||'').replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" '+(extra||'')+' onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=LEAF">'}
 function fillPics(root){(root||document).querySelectorAll('[data-ph]').forEach(function(el){if(el.dataset.done)return;el.dataset.done=1;el.insertAdjacentHTML('afterbegin',gpic(el.dataset.ph,el.dataset.alt||'',+el.dataset.w||900))})}
 
-/* Каталог «Верда» (образец). [фото, название, категория, цена, старая цена, описание, хит/новинка] */
+/* Каталог «Садовир» (образец). [фото, название, категория, цена, старая цена, описание, хит/новинка] */
 var CATS=['Семена','Рассада и саженцы','Инструменты','Полив','Грунты и удобрения','Горшки и декор','Теплицы и укрытия','Сад и отдых'];
 var GOODS=[
 ['1777620843343-851c08e1a336','Семена томатов «Бычье сердце»','Семена',89,0,'Крупноплодный сорт, 20 семян. Для теплицы и открытого грунта.','hit'],
@@ -155,7 +155,7 @@ var PH={hero:'1658865696467-7e6de48922fe',display:'1752401961634-3c0f9eee70db',i
 function rub(n){return n.toLocaleString('ru-RU').replace(/,/g,' ')+' ₽'}
 
 function $(s){return document.querySelector(s)}
-function st(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('verda-'+k)||'null');localStorage.setItem('verda-'+k,JSON.stringify(v))}catch(e){return null}}
+function st(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('sadovir-'+k)||'null');localStorage.setItem('sadovir-'+k,JSON.stringify(v))}catch(e){return null}}
 var P=GOODS.map(function(g,i){return {id:i,ph:g[0],n:g[1],c:g[2],p:g[3],o:g[4],d:g[5],t:g[6],pop:(i*37)%45}});
 var cart=st('cart')||{},fav=st('fav')||{},S={cat:'',q:'',max:40000,min:0,sale:false,hit:false,nw:false,sort:'pop',lim:12};
 var ICO={'Семена':'🌰','Рассада и саженцы':'🌱','Инструменты':'✂️','Полив':'💧','Грунты и удобрения':'🌿','Горшки и декор':'🏺','Теплицы и укрытия':'🏡','Сад и отдых':'⛱️'};

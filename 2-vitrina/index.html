@@ -1,6 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow">
-<title>Верда — садовый центр: рассада, саженцы, всё для сада</title>
-<meta name="description" content="Садовый центр «Верда» в Копейске и Челябинске: хиты сезона, календарь посадок для Урала, доставка и посадка. Отложим заказ за 5 минут.">
+<title>Садовир — садовый центр: рассада, саженцы, всё для сада</title>
+<meta name="description" content="Садовый центр «Садовир» в Копейске и Челябинске: хиты сезона, календарь посадок для Урала, доставка и посадка. Отложим заказ за 5 минут.">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#16201A;--mut:#5F6B62;--bg:#FBFAF5;--g:#1F4D2E;--g3:#2E6B40;--y:#F2C14E;--t:#D9653B;--line:#E7E4D8}
@@ -73,7 +73,7 @@ footer{background:#0F1A12;color:#9AA89D;padding:40px 0 100px;font-size:.88rem}fo
 @media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:10px}.card .b{padding:10px}.card p{display:none}.serv{grid-template-columns:1fr}.promo,.order{padding:26px}.cd div{min-width:62px}section{padding:60px 0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style></head><body>
-<nav id="nav"><div class="w"><a class="logo" href="#"><i>🌿</i>Верда</a><div class="nl"><a href="#hits">Хиты сезона</a><a href="#cal">Календарь</a><a href="#serv">Услуги</a><a href="#faq">Вопросы</a></div><a class="cta" href="#order">Мой список<span id="cnt">0</span></a></div></nav>
+<nav id="nav"><div class="w"><a class="logo" href="#"><i>🌿</i>Садовир</a><div class="nl"><a href="#hits">Хиты сезона</a><a href="#cal">Календарь</a><a href="#serv">Услуги</a><a href="#faq">Вопросы</a></div><a class="cta" href="#order">Мой список<span id="cnt">0</span></a></div></nav>
 <header class="hero"><div class="bg" id="hbg"></div><div class="w">
  <span class="kick" style="color:var(--y)">Садовый центр · Копейск и Челябинск</span>
  <h1>Весь сезон — <b>в одном</b> садовом центре</h1>
@@ -107,7 +107,7 @@ footer{background:#0F1A12;color:#9AA89D;padding:40px 0 100px;font-size:.88rem}fo
 
 <section id="order" style="padding-top:0"><div class="w"><div class="order rv"><div><span class="kick" style="color:var(--y)">Отложим заказ</span><h2>Соберём всё к вашему приезду</h2><p style="opacity:.85">Отметьте товары кнопкой «Отложить» — список появится здесь. Позвоним в течение 15 минут, подтвердим наличие и время.</p><p style="opacity:.85">📍 Копейск, ул. Садовая, 1 · ежедневно 9:00–20:00<br>📞 <a href="tel:+77777777777" style="color:#fff;font-weight:800">+7-777-777-77-77</a></p></div>
 <form id="f"><div class="lst" id="lst"></div><input required name="n" placeholder="Ваше имя"><input required name="p" type="tel" placeholder="Телефон"><textarea name="c" rows="2" placeholder="Комментарий (например, нужна доставка)"></textarea><button class="btn by" style="width:100%;justify-content:center">Отложить заказ</button><div class="ok" id="ok">Спасибо! Заявка принята — перезвоним в течение 15 минут.</div></form></div></div></section>
-<footer><div class="w"><div><b>Верда</b> — садовый центр<br>Копейск, ул. Садовая, 1</div><div>© 2026 · Все данные на сайте — образец</div></div></footer>
+<footer><div class="w"><div><b>Садовир</b> — садовый центр<br>Копейск, ул. Садовая, 1</div><div>© 2026 · Все данные на сайте — образец</div></div></footer>
 <div class="toast" id="toast"></div>
 <a href="../index.html" class="tarify-back" aria-label="Вернуться ко всем тарифам" style="position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:2147483000;display:inline-flex;align-items:center;gap:6px;padding:11px 16px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;font:600 14px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-decoration:none;box-shadow:0 8px 22px -6px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)">← Все тарифы</a>
 <script>
@@ -117,7 +117,7 @@ function phURL(id,w){return 'https://images.unsplash.com/photo-'+id+'?w='+(w||80
 function gpic(id,alt,w,extra){w=w||800;var h=Math.round(w/2),b=Math.min(2400,w*1.6|0);return '<img src="'+phURL(id,w)+'" srcset="'+phURL(id,h)+' '+h+'w, '+phURL(id,w)+' '+w+'w, '+phURL(id,b)+' '+b+'w" sizes="(max-width:760px) 100vw, 50vw" alt="'+(alt||'').replace(/"/g,'&quot;')+'" loading="lazy" decoding="async" '+(extra||'')+' onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=LEAF">'}
 function fillPics(root){(root||document).querySelectorAll('[data-ph]').forEach(function(el){if(el.dataset.done)return;el.dataset.done=1;el.insertAdjacentHTML('afterbegin',gpic(el.dataset.ph,el.dataset.alt||'',+el.dataset.w||900))})}
 
-/* Каталог «Верда» (образец). [фото, название, категория, цена, старая цена, описание, хит/новинка] */
+/* Каталог «Садовир» (образец). [фото, название, категория, цена, старая цена, описание, хит/новинка] */
 var CATS=['Семена','Рассада и саженцы','Инструменты','Полив','Грунты и удобрения','Горшки и декор','Теплицы и укрытия','Сад и отдых'];
 var GOODS=[
 ['1777620843343-851c08e1a336','Семена томатов «Бычье сердце»','Семена',89,0,'Крупноплодный сорт, 20 семян. Для теплицы и открытого грунта.','hit'],

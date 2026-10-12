@@ -115,4 +115,15 @@ var h=new Date().getHours(),o=h>=9&&h<20,op=document.getElementById('open');if(!
 /* появление при прокрутке */
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
 document.querySelectorAll('.rv').forEach(function(e,i){e.style.transitionDelay=(i%3*.08)+'s';io.observe(e)});
-</script></body></html>
+</script><style data-hscroll>.hs-wrap{position:relative;min-width:0;max-width:100%}.hs-btn{position:absolute;top:50%;z-index:30;width:42px;height:42px;margin-top:-21px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(20,20,24,.62);color:#fff;font:600 18px/1 system-ui,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.25);transition:opacity .25s,transform .2s;padding:0}.hs-btn:hover{transform:scale(1.08)}.hs-btn.l{left:6px}.hs-btn.r{right:6px}.hs-btn.off{opacity:0;pointer-events:none}.hs-wrap.sm .hs-btn{width:30px;height:30px;margin-top:-15px;font-size:14px}</style>
+<script data-hscroll>(function(){function sc(el){var cs=getComputedStyle(el);return /(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+8&&el.clientHeight>40}
+function upd(el){var w=el.parentNode,l=w.querySelector(':scope>.hs-btn.l'),r=w.querySelector(':scope>.hs-btn.r'),can=el.scrollWidth>el.clientWidth+8;l.classList.toggle('off',!can||el.scrollLeft<4);r.classList.toggle('off',!can||el.scrollLeft+el.clientWidth>=el.scrollWidth-4)}
+function step(el){var c=el.firstElementChild,g=parseFloat(getComputedStyle(el).columnGap)||16,s=c?c.getBoundingClientRect().width+g:0;if(!s||s>el.clientWidth*.9)s=el.clientWidth*.8;return s}
+function add(el){if(el.dataset.hs)return;el.dataset.hs=1;var w=document.createElement('div');w.className='hs-wrap'+(el.clientHeight<100?' sm':'');var cs=getComputedStyle(el);['gridColumn','gridRow','marginTop','marginBottom','marginLeft','marginRight','flex','alignSelf','width','maxWidth'].forEach(function(p){if(p.indexOf('margin')==0){w.style[p]=cs[p];el.style[p]='0'}else if(el.style[p]||p.indexOf('grid')==0||p=='alignSelf'||p=='flex'){w.style[p]=cs[p]}});el.parentNode.insertBefore(w,el);w.appendChild(el);
+[['l','←','Прокрутить назад',-1],['r','→','Прокрутить вперёд',1]].forEach(function(a){var b=document.createElement('button');b.type='button';b.className='hs-btn '+a[0]+' off';b.textContent=a[1];b.setAttribute('aria-label',a[2]);b.onclick=function(){el.scrollBy({left:a[3]*step(el),behavior:'smooth'})};w.appendChild(b)});
+el.addEventListener('scroll',function(){upd(el)},{passive:true});upd(el)}
+function scan(){document.querySelectorAll('body *:not(.hs-btn):not(.hs-wrap)').forEach(function(el){if(el.dataset.hs){upd(el);return}if(!el.closest('[data-no-hs]')&&sc(el))add(el)})}
+var t;function later(){clearTimeout(t);t=setTimeout(scan,250)}
+if(document.readyState!='loading')later();else document.addEventListener('DOMContentLoaded',later);
+addEventListener('load',later);addEventListener('resize',later);document.addEventListener('click',function(e){if(!e.target.closest('.hs-btn'))later()},true)})();</script>
+</body></html>
